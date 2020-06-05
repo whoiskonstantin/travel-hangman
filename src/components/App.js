@@ -1,11 +1,14 @@
 import React from 'react'
 import '../GlobalStyles.css'
+import NewGame from './NewGame'
+import NavBar from './NavBar'
 
 function App() {
   return (
-    <div className='app container'>
-      <h1>Travel Hangman</h1>
-    </div>
+    <React.Fragment>
+      <NavBar />
+      <NewGame />
+    </React.Fragment>
   )
 }
 

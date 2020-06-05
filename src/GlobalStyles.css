@@ -3,6 +3,38 @@
   padding: 0;
 }
 
-h1 {
+:root {
+  --main-bg-color: #6e5434;
+  --text-color: #ffffff;
+}
+
+h1,
+h3 {
   text-align: center;
+}
+
+h4 {
+  font-style: italic;
+}
+
+h4,
+.navlist,
+.navitem {
+  display: inline-block;
+}
+
+.navitem {
+  margin-left: 15px;
+}
+
+.navbar {
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
+}
+
+.container {
+  margin: 10px;
 }
