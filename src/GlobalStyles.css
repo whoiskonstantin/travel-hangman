@@ -12,7 +12,9 @@ h1,
 h3 {
   text-align: center;
 }
-
+h3.capital {
+  margin: 5px;
+}
 h4 {
   font-style: italic;
 }
@@ -37,4 +39,23 @@ h4,
 
 .container {
   margin: 10px;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+.keyboard {
+  width: 100%;
+}
+
+.keyboard li {
+  display: inline-block;
+  font-size: large;
+}
+
+.keyboard button {
+  width: 1.6rem;
+  padding: 2px;
+  margin: 1px;
 }
