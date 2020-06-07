@@ -59,3 +59,10 @@ h4,
   padding: 2px;
   margin: 1px;
 }
+.new-game {
+  text-align: center;
+}
+
+.start-game {
+  width: 100px;
+}

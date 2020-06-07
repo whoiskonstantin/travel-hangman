@@ -1,44 +1,56 @@
 import React, { Component } from 'react'
 import { allCountries } from '../resources/allCountries'
 import { keyboard } from '../resources/specialCharacters'
+import Keyboard from './Keyboard'
+import Question from './Question'
 
 export default class NewGame extends Component {
-  state = {
-    countries: allCountries,
-    currentCountry: null,
-    capital: null,
-    dash: null,
-    keyboardRows: [
-      { row: keyboard.slice(0, 10) },
-      { row: keyboard.slice(10, 19) },
-      { row: keyboard.slice(19, 26) }
-    ]
+  constructor(props) {
+    super(props)
+    this.state = {
+      countries: allCountries,
+      countryName: null,
+      capital: null,
+      dash: null,
+      startGame: false,
+      keyboardRows: [
+        { row: keyboard.slice(0, 10) },
+        { row: keyboard.slice(10, 19) },
+        { row: keyboard.slice(19, 26) }
+      ]
+    }
   }
 
   componentDidMount() {
-    this.renderCapital()
+    this.renderCountry()
   }
 
-  renderCapital(withSpecChars) {
+  renderCountry(withSpecChars) {
     withSpecChars = withSpecChars || null
+
     const randomNumber = Math.floor(Math.random() * this.state.countries.length)
-    const pickedCountry = this.state.countries[randomNumber]
-    const currentCountry = pickedCountry.name
+    const country = this.state.countries[randomNumber]
+    const countryName = country.name
+
     let capital
     withSpecChars
-      ? (capital = pickedCountry.capitalSpecial || pickedCountry.capital)
-      : (capital = pickedCountry.capital)
+      ? (capital = country.capitalSpecial || country.capital)
+      : (capital = country.capital)
 
-    const length = capital.length
-    let dash = [...'_'.repeat(length)]
     capital = [...capital.toLowerCase()]
-    this.setState({ currentCountry, dash, capital }, () => {
-      console.log(this.state.dash)
-    })
+    let dash = [...'_'.repeat(capital.length)]
+    // let dashObj = { ...dash }
+    console.log(capital)
+    this.setState({ countryName, capital, dash })
+  }
+
+  startGame() {
+    this.setState({ startGame: true })
   }
 
   handleChoose = key => {
     console.log('clicked:', key)
+    console.log(this.state.capital)
     const capital = [...this.state.capital]
     const dash = this.state.dash
     capital.forEach(letter => {
@@ -54,30 +66,21 @@ export default class NewGame extends Component {
   }
 
   render() {
+    const { countryName, capital, dash, startGame, keyboardRows } = this.state
+
     return (
-      <div>
+      <div className='new-game'>
         <h1>New Game</h1>
-        <div className='container'>
-          <h3>What is the capital of {this.state.currentCountry}?</h3>
-          {this.state.dash.map(item => (
-            <h3 className='capital' key={this.renderDash().indexOf(item)}>
-              {item}
-            </h3>
-          ))}
+        {!startGame ? (
+          <button className='start-game' onClick={() => this.startGame()}>
+            Start
+          </button>
+        ) : (
           <div className='container'>
-            {this.state.keyboardRows.map(obj => (
-              <ul className='keyboard flex' key={obj.row.toString()}>
-                {obj.row.map(letter => (
-                  <button key={letter}>
-                    <li onClick={() => this.handleChoose(letter)}>
-                      {letter.toUpperCase()}
-                    </li>
-                  </button>
-                ))}
-              </ul>
-            ))}
+            <Question country={countryName} dash={dash} capital={capital} />
           </div>
-        </div>
+        )}
+        <Keyboard keyboard={keyboardRows} onChoose={this.handleChoose} />
       </div>
     )
   }
