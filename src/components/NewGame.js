@@ -49,20 +49,18 @@ export default class NewGame extends Component {
   }
 
   handleChoose = key => {
+    const { dash, capital } = this.state
     console.log('clicked:', key)
-    console.log(this.state.capital)
-    const capital = [...this.state.capital]
-    const dash = this.state.dash
-    capital.forEach(letter => {
-      if (letter === key) {
-        // console.log(dash)
-        const index = capital.indexOf(letter)
-        dash[index] = key
-        this.setState({ capital, dash })
-      } else {
-        return console.log('Wrong letter!')
-      }
-    })
+    console.log(capital.indexOf(key))
+    const index = capital.indexOf(key)
+    if (index < 0) {
+      console.log('Wrong letter!')
+      return
+    }
+    dash[index] = key
+    console.log(dash)
+
+    this.setState({ dash })
   }
 
   render() {
