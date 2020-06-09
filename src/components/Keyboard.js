@@ -7,11 +7,9 @@ export default class Keyboard extends Component {
         {this.props.keyboard.map(obj => (
           <ul className='keyboard flex' key={obj.row.toString()}>
             {obj.row.map(letter => (
-              <button key={letter}>
-                <li onClick={() => this.props.onChoose(letter)}>
-                  {letter.toUpperCase()}
-                </li>
-              </button>
+              <li key={letter} onClick={() => this.props.onChoose(letter)}>
+                <button>{letter.toUpperCase()}</button>
+              </li>
             ))}
           </ul>
         ))}

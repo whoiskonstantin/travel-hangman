@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { allCountries } from '../resources/allCountries'
-import { keyboard } from '../resources/specialCharacters'
+import { keyboard, ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
 
@@ -39,7 +39,16 @@ export default class NewGame extends Component {
 
     capital = [...capital.toLowerCase()]
     let dash = [...'_'.repeat(capital.length)]
-    // let dashObj = { ...dash }
+
+    capital.forEach(item =>
+      ponctuation.forEach(char => {
+        if (item === char) {
+          console.log('Detected: ', char)
+          dash[capital.indexOf(item)] = char
+        }
+      })
+    )
+
     console.log(capital)
     this.setState({ countryName, capital, dash })
   }
@@ -50,17 +59,20 @@ export default class NewGame extends Component {
 
   handleChoose = key => {
     const { dash, capital } = this.state
-    console.log('clicked:', key)
-    console.log(capital.indexOf(key))
+
     const index = capital.indexOf(key)
-    if (index < 0) {
+    if (index === -1) {
       console.log('Wrong letter!')
       return
     }
-    dash[index] = key
-    console.log(dash)
-
-    this.setState({ dash })
+    for (let i = 0; i < capital.length; i++) {
+      if (capital[0] === key) {
+        dash[0] = key.toUpperCase()
+      } else if (capital[i] === key) {
+        dash[i] = key
+      }
+    }
+    return this.setState({ dash })
   }
 
   render() {
@@ -76,9 +88,9 @@ export default class NewGame extends Component {
         ) : (
           <div className='container'>
             <Question country={countryName} dash={dash} capital={capital} />
+            <Keyboard keyboard={keyboardRows} onChoose={this.handleChoose} />
           </div>
         )}
-        <Keyboard keyboard={keyboardRows} onChoose={this.handleChoose} />
       </div>
     )
   }

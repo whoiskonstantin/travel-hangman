@@ -17,7 +17,7 @@ export const allSpecialChar = [
   'ú'
 ]
 
-export const ponctuation = ["'", '-', '.', ',']
+export const ponctuation = ["'", '-', '.', ',', ' ']
 
 export const substitutionArray = [
   'í',

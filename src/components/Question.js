@@ -7,9 +7,9 @@ export default function Question(props) {
     <div>
       <h3>What is the capital of {props.country}?</h3>
       <ul>
-        {props.capital.map(item => (
-          <li key={props.dash.indexOf(item)} className='hidden-word'>
-            _
+        {props.dash.map((item, index) => (
+          <li key={index} className='hidden-word'>
+            {item}
           </li>
         ))}
       </ul>
