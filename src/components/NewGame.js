@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { allCountries } from '../resources/allCountries'
-import { keyboard, ponctuation } from '../resources/specialCharacters'
+import { ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
 
@@ -11,13 +11,11 @@ export default class NewGame extends Component {
       countries: allCountries,
       countryName: null,
       capital: null,
+      numberOfHiddenLetters: null,
+      keyClicks: [],
       dash: null,
-      startGame: false,
-      keyboardRows: [
-        { row: keyboard.slice(0, 10) },
-        { row: keyboard.slice(10, 19) },
-        { row: keyboard.slice(19, 26) }
-      ]
+      lives: 3,
+      startGame: false
     }
   }
 
@@ -27,30 +25,41 @@ export default class NewGame extends Component {
 
   renderCountry(withSpecChars) {
     withSpecChars = withSpecChars || null
-
-    const randomNumber = Math.floor(Math.random() * this.state.countries.length)
-    const country = this.state.countries[randomNumber]
+    let { countries } = this.state
+    const randomNumber = Math.floor(Math.random() * countries.length)
+    const country = countries[randomNumber]
     const countryName = country.name
+    countries = countries.filter(object => object !== country)
+    console.log(countries)
 
     let capital
     withSpecChars
       ? (capital = country.capitalSpecial || country.capital)
       : (capital = country.capital)
 
+    const numberOfHiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
-    let dash = [...'_'.repeat(capital.length)]
+    let dash = [...'_'.repeat(numberOfHiddenLetters)]
 
+    // Helping player by rendering special chars like
+    // comas, spaces, dashes, etc...
     capital.forEach(item =>
       ponctuation.forEach(char => {
         if (item === char) {
-          console.log('Detected: ', char)
           dash[capital.indexOf(item)] = char
         }
       })
     )
 
     console.log(capital)
-    this.setState({ countryName, capital, dash })
+    this.setState({
+      countryName,
+      capital,
+      dash,
+      numberOfHiddenLetters,
+      countries,
+      keyClicks: []
+    })
   }
 
   startGame() {
@@ -58,25 +67,56 @@ export default class NewGame extends Component {
   }
 
   handleChoose = key => {
-    const { dash, capital } = this.state
-
-    const index = capital.indexOf(key)
-    if (index === -1) {
-      console.log('Wrong letter!')
+    let { dash, capital, lives, numberOfHiddenLetters, keyClicks } = this.state
+    console.log(keyClicks)
+    if (keyClicks.indexOf(key) !== -1) {
       return
     }
+    keyClicks.push(key)
+
+    const index = capital.indexOf(key)
+
+    // Check if pressed key doesn't match the letter
+
+    if (index === -1 && lives === 0) {
+      console.log('Game Over!')
+      return
+    }
+    if (index === -1 && lives !== 0) {
+      console.log('Wrong letter!')
+      this.setState({ lives: lives - 1, keyClicks })
+      return
+    }
+
+    // Render the letter
     for (let i = 0; i < capital.length; i++) {
-      if (capital[0] === key) {
-        dash[0] = key.toUpperCase()
-      } else if (capital[i] === key) {
+      //Capital letter
+      if (capital[i] === key) {
         dash[i] = key
+        numberOfHiddenLetters--
+      } else if (capital[0] === key) {
+        dash[0] = key.toUpperCase()
       }
     }
-    return this.setState({ dash })
+    if (numberOfHiddenLetters === 0) {
+      return this.renderCountry()
+    }
+    return this.setState({ dash, numberOfHiddenLetters, keyClicks })
   }
 
   render() {
-    const { countryName, capital, dash, startGame, keyboardRows } = this.state
+    const {
+      countryName,
+      capital,
+      lives,
+      dash,
+      startGame,
+      keyClicks
+    } = this.state
+
+    if (lives === 0) {
+      console.log('Lives is zero')
+    }
 
     return (
       <div className='new-game'>
@@ -87,8 +127,11 @@ export default class NewGame extends Component {
           </button>
         ) : (
           <div className='container'>
+            <h3>
+              You have {lives} {lives === 1 ? 'live' : 'lives'}
+            </h3>
             <Question country={countryName} dash={dash} capital={capital} />
-            <Keyboard keyboard={keyboardRows} onChoose={this.handleChoose} />
+            <Keyboard onChoose={this.handleChoose} keyClicks={keyClicks} />
           </div>
         )}
       </div>

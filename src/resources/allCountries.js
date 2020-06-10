@@ -75,7 +75,7 @@ export const allCountries = [
     alpha2Code: 'AL',
     alpha3Code: 'ALB',
     callingCodes: ['355'],
-    capital: 'Tirana',
+    capital: 'Tirtana',
     altSpellings: ['AL', 'Shqipëri', 'Shqipëria', 'Shqipnia'],
     region: 'Europe',
     subregion: 'Southern Europe',

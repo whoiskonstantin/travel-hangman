@@ -25,6 +25,14 @@ h4,
   display: inline-block;
 }
 
+button {
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
 .navitem {
   margin-left: 15px;
 }
@@ -70,4 +78,9 @@ h4,
 .hidden-word {
   display: inline-block;
   margin: 5px;
+}
+
+.disabled {
+  background-color: grey;
+  cursor: unset;
 }
