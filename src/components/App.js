@@ -1,14 +1,17 @@
 import React from 'react'
 import '../GlobalStyles.css'
 import NewGame from './NewGame'
-import NavBar from './NavBar'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import MainMenu from './MainMenu'
 
 function App() {
   return (
-    <React.Fragment>
-      <NavBar />
-      <NewGame />
-    </React.Fragment>
+    <BrowserRouter>
+      <Switch>
+        <NewGame path='/new-game' component={NewGame} />
+        <MainMenu path='/' component={MainMenu} />
+      </Switch>
+    </BrowserRouter>
   )
 }
 
