@@ -11,9 +11,12 @@ export default class Keyboard extends Component {
   }
   toggleClass(letter) {
     let toggledClass
-    this.props.keyClicks.forEach(
-      key => key === letter && (toggledClass = 'disabled')
-    )
+    this.props.keyClicks.forEach(key => {
+      if (key === letter) {
+        return (toggledClass = 'disabled')
+      }
+      return toggledClass
+    })
     return toggledClass
   }
 

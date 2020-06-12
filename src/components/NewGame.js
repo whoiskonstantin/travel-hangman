@@ -3,7 +3,6 @@ import { allCountries } from '../resources/allCountries'
 import { ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
-import NavBar from './NavBar'
 
 export default class NewGame extends Component {
   constructor(props) {
@@ -77,21 +76,21 @@ export default class NewGame extends Component {
 
     const index = capital.indexOf(key)
 
-    // Key click logic
-    // Game over
+    // Check if pressed key doesn't match the letter
+
     if (index === -1 && lives === 0) {
       console.log('Game Over!')
       return
     }
-    // Wrong letter pressed
     if (index === -1 && lives !== 0) {
+      console.log('Wrong letter!')
       this.setState({ lives: lives - 1, keyClicks })
       return
     }
-    // Right letter pressed
+
     // Render the letter
     for (let i = 0; i < capital.length; i++) {
-      // Render capital letter
+      //Capital letter
       if (capital[i] === key) {
         dash[i] = key
         numberOfHiddenLetters--
@@ -121,7 +120,6 @@ export default class NewGame extends Component {
 
     return (
       <div className='new-game'>
-        <NavBar />
         <h1>New Game</h1>
         {!startGame ? (
           <button className='start-game' onClick={() => this.startGame()}>
