@@ -9,7 +9,7 @@ export default class NewGame extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      countries: allCountries,
+      countries: [],
       numberOfCountries: null,
       countryName: null,
       capital: null,
@@ -23,8 +23,13 @@ export default class NewGame extends Component {
 
   renderCountry(withSpecChars) {
     withSpecChars = withSpecChars || null
+    let countries
 
-    let { countries } = this.state
+    if (this.state.countries.length > 0) {
+      countries = this.state.countries
+    } else {
+      countries = allCountries
+    }
     const randomNumber = Math.floor(Math.random() * countries.length)
     const country = countries[randomNumber]
     const countryName = country.name
