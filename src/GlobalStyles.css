@@ -4,7 +4,7 @@
 }
 
 :root {
-  --main-bg-color: #6e5434;
+  --main-bg-color: #ffffffa4;
   --text-color: #ffffff;
 }
 
@@ -35,18 +35,20 @@ button {
 
 .navitem {
   margin-left: 15px;
+  height: 15px;
+  width: 15px;
 }
 
 .navbar {
-  padding: 5px 10px;
+  padding: 15px 15px;
+  height: 5vh;
   display: flex;
-  justify-content: space-between;
-  background-color: var(--main-bg-color);
-  color: var(--text-color);
+  justify-content: flex-end;
 }
 
 .container {
   margin: 10px;
+  text-align: center;
 }
 
 .flex {
@@ -67,12 +69,10 @@ button {
   padding: 2px;
   margin: 1px;
 }
-.new-game {
-  text-align: center;
-}
 
 .start-game {
   width: 100px;
+  margin-top: 2vh;
 }
 
 .hidden-word {
@@ -83,4 +83,25 @@ button {
 .disabled {
   background-color: grey;
   cursor: unset;
+}
+
+.menu-icon {
+  height: 6vh;
+  width: 6vh;
+}
+/* .full-screen {
+  height: 100vh;
+} */
+
+.modal {
+  position: fixed;
+  left: 10%;
+  width: 80%;
+  height: 400px;
+  top: 10%;
+  margin: 0;
+  padding: 2vh;
+  box-sizing: border-box;
+  border-radius: 3vh;
+  background-color: var(--main-bg-color);
 }

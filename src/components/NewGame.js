@@ -3,43 +3,42 @@ import { allCountries } from '../resources/allCountries'
 import { ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
+import Modal from './Modal'
 
 export default class NewGame extends Component {
   constructor(props) {
     super(props)
     this.state = {
       countries: allCountries,
+      numberOfCountries: null,
       countryName: null,
       capital: null,
-      numberOfHiddenLetters: null,
+      hiddenLetters: null,
       keyClicks: [],
       dash: null,
-      lives: 3,
-      startGame: false
+      lives: 1,
+      playing: false
     }
-  }
-
-  componentDidMount() {
-    this.renderCountry()
   }
 
   renderCountry(withSpecChars) {
     withSpecChars = withSpecChars || null
+
     let { countries } = this.state
     const randomNumber = Math.floor(Math.random() * countries.length)
     const country = countries[randomNumber]
     const countryName = country.name
+    const numberOfCountries = countries.length
     countries = countries.filter(object => object !== country)
-    console.log(countries)
 
     let capital
     withSpecChars
       ? (capital = country.capitalSpecial || country.capital)
       : (capital = country.capital)
 
-    const numberOfHiddenLetters = capital.length
+    const hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
-    let dash = [...'_'.repeat(numberOfHiddenLetters)]
+    let dash = [...'_'.repeat(hiddenLetters)]
 
     // Helping player by rendering special chars like
     // comas, spaces, dashes, etc...
@@ -54,20 +53,28 @@ export default class NewGame extends Component {
     console.log(capital)
     this.setState({
       countryName,
+      numberOfCountries,
       capital,
       dash,
-      numberOfHiddenLetters,
+      hiddenLetters,
       countries,
-      keyClicks: []
+      keyClicks: [],
+      lives: 1
     })
   }
 
-  startGame() {
-    this.setState({ startGame: true })
+  handleNewGame = () => {
+    this.setState({ playing: true, countries: allCountries })
+    this.renderCountry()
+  }
+
+  handleContinue = () => {
+    this.renderCountry()
+    this.setState({ playing: true })
   }
 
   handleChoose = key => {
-    let { dash, capital, lives, numberOfHiddenLetters, keyClicks } = this.state
+    let { dash, capital, lives, hiddenLetters, keyClicks } = this.state
     console.log(keyClicks)
     if (keyClicks.indexOf(key) !== -1) {
       return
@@ -79,11 +86,10 @@ export default class NewGame extends Component {
     // Check if pressed key doesn't match the letter
 
     if (index === -1 && lives === 0) {
-      console.log('Game Over!')
+      this.setState({ playing: false, countries: allCountries })
       return
     }
     if (index === -1 && lives !== 0) {
-      console.log('Wrong letter!')
       this.setState({ lives: lives - 1, keyClicks })
       return
     }
@@ -93,43 +99,47 @@ export default class NewGame extends Component {
       //Capital letter
       if (capital[i] === key) {
         dash[i] = key
-        numberOfHiddenLetters--
+        hiddenLetters--
+        this.setState({ hiddenLetters })
       } else if (capital[0] === key) {
         dash[0] = key.toUpperCase()
       }
     }
-    if (numberOfHiddenLetters === 0) {
-      return this.renderCountry()
+    if (hiddenLetters === 0) {
+      return this.setState({ playing: false, hiddenLetters })
     }
-    return this.setState({ dash, numberOfHiddenLetters, keyClicks })
+    return this.setState({ dash, hiddenLetters, keyClicks })
   }
 
   render() {
     const {
       countryName,
+      numberOfCountries,
       capital,
       lives,
       dash,
-      startGame,
-      keyClicks
+      playing,
+      keyClicks,
+      hiddenLetters
     } = this.state
 
-    if (lives === 0) {
-      console.log('Lives is zero')
-    }
-
+    console.log(numberOfCountries)
     return (
-      <div className='new-game'>
-        <h1>New Game</h1>
-        {!startGame ? (
-          <button className='start-game' onClick={() => this.startGame()}>
-            Start
-          </button>
+      <div className='container full-screen'>
+        {!playing ? (
+          <Modal
+            newGame={this.handleNewGame}
+            lives={lives}
+            hiddenLetters={hiddenLetters}
+            onContinue={this.handleContinue}
+            numberOfCountries={numberOfCountries}
+          />
         ) : (
           <div className='container'>
             <h3>
-              You have {lives} {lives === 1 ? 'live' : 'lives'}
+              {lives} {lives === 1 ? 'life' : 'lives'} left
             </h3>
+            <h3>{numberOfCountries} countries left</h3>
             <Question country={countryName} dash={dash} capital={capital} />
             <Keyboard onChoose={this.handleChoose} keyClicks={keyClicks} />
           </div>
