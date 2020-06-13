@@ -7,7 +7,7 @@ export default function Modal({
   onContinue,
   numberOfCountries
 }) {
-  console.log(numberOfCountries)
+  // if player completed the whole game
   if (numberOfCountries === 1) {
     return (
       <div className='modal'>
@@ -19,6 +19,7 @@ export default function Modal({
       </div>
     )
   }
+  // if player guessed the capital correctly
   if (hiddenLetters === 0) {
     return (
       <div className='modal'>
@@ -34,6 +35,7 @@ export default function Modal({
       </div>
     )
   }
+  // if player ran out of lives
   if (lives === 0) {
     return (
       <div className='modal'>
@@ -44,6 +46,7 @@ export default function Modal({
       </div>
     )
   }
+  // welcome menu, showed when player visits the home page
   return (
     <div className='modal'>
       <h1>Welcome to Travel Hangman</h1>
