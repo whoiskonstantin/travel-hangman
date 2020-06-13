@@ -89,9 +89,13 @@ button {
   height: 6vh;
   width: 6vh;
 }
-/* .full-screen {
-  height: 100vh;
-} */
+.svg-container {
+  height: 100%;
+  max-width: 600px;
+  padding: 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
 
 .modal {
   position: fixed;

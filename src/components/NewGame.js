@@ -4,6 +4,7 @@ import { ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
 import Modal from './Modal'
+import Hangman from './Hangman'
 
 export default class NewGame extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class NewGame extends Component {
       hiddenLetters: null,
       keyClicks: [],
       dash: null,
-      lives: 1,
+      lives: null,
       playing: false
     }
   }
@@ -64,7 +65,7 @@ export default class NewGame extends Component {
       hiddenLetters,
       countries,
       keyClicks: [],
-      lives: 1
+      lives: 6
     })
   }
 
@@ -80,7 +81,7 @@ export default class NewGame extends Component {
 
   handleChoose = key => {
     let { dash, capital, lives, hiddenLetters, keyClicks } = this.state
-    console.log(keyClicks)
+
     if (keyClicks.indexOf(key) !== -1) {
       return
     }
@@ -90,11 +91,15 @@ export default class NewGame extends Component {
 
     // Check if pressed key doesn't match the letter
 
-    if (index === -1 && lives === 0) {
-      this.setState({ playing: false, countries: allCountries })
+    if (index === -1 && lives === 1) {
+      lives = 0
+      this.setState({ lives })
+      setTimeout(() => {
+        this.setState({ lives, playing: false, countries: allCountries })
+      }, 2000)
       return
     }
-    if (index === -1 && lives !== 0) {
+    if (index === -1 && lives !== 1) {
       this.setState({ lives: lives - 1, keyClicks })
       return
     }
@@ -128,7 +133,6 @@ export default class NewGame extends Component {
       hiddenLetters
     } = this.state
 
-    console.log(numberOfCountries)
     return (
       <div className='container full-screen'>
         {!playing ? (
@@ -146,6 +150,7 @@ export default class NewGame extends Component {
             </h3>
             <h3>{numberOfCountries} countries left</h3>
             <Question country={countryName} dash={dash} capital={capital} />
+            <Hangman lives={lives} />
             <Keyboard onChoose={this.handleChoose} keyClicks={keyClicks} />
           </div>
         )}
