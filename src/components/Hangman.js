@@ -3,7 +3,7 @@ import { ReactComponent as Gallows } from '../resources/hangman.svg'
 import { gsap } from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
-import { Whoosh } from '../resources/sounds/whoosh.mp3'
+import SoundElement from './SoundElement'
 
 gsap.registerPlugin(CustomEase)
 gsap.registerPlugin(MorphSVGPlugin)
@@ -207,9 +207,15 @@ export default class Hangman extends Component {
     })
   }
   render() {
+    const { lives, correctLetter, hiddenLetters } = this.props
     return (
       <div className='svg-container'>
         <Gallows />
+        <SoundElement
+          lives={lives}
+          correctLetter={correctLetter}
+          hiddenLetters={hiddenLetters}
+        />
       </div>
     )
   }

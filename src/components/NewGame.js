@@ -15,7 +15,8 @@ export default class NewGame extends Component {
       countryName: null,
       capital: null,
       hiddenLetters: null,
-      keyClicks: [],
+      clickedLetters: [],
+      correctLetter: false,
       dash: null,
       lives: null,
       playing: false
@@ -42,7 +43,7 @@ export default class NewGame extends Component {
       ? (capital = country.capitalSpecial || country.capital)
       : (capital = country.capital)
 
-    const hiddenLetters = capital.length
+    let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
     let dash = [...'_'.repeat(hiddenLetters)]
 
@@ -52,6 +53,7 @@ export default class NewGame extends Component {
       ponctuation.forEach(char => {
         if (item === char) {
           dash[capital.indexOf(item)] = char
+          hiddenLetters--
         }
       })
     )
@@ -64,13 +66,16 @@ export default class NewGame extends Component {
       dash,
       hiddenLetters,
       countries,
-      keyClicks: [],
+      clickedLetters: [],
       lives: 6
     })
   }
 
   handleNewGame = () => {
-    this.setState({ playing: true, countries: allCountries })
+    this.setState({
+      playing: true,
+      countries: allCountries
+    })
     this.renderCountry()
   }
 
@@ -80,27 +85,26 @@ export default class NewGame extends Component {
   }
 
   handleChoose = key => {
-    let { dash, capital, lives, hiddenLetters, keyClicks } = this.state
+    let { dash, capital, lives, hiddenLetters, clickedLetters } = this.state
 
-    if (keyClicks.indexOf(key) !== -1) {
+    if (clickedLetters.indexOf(key) !== -1) {
       return
     }
-    keyClicks.push(key)
-
+    clickedLetters.push(key)
     const index = capital.indexOf(key)
 
-    // Check if pressed key doesn't match the letter
+    // Check if the worng letter is chosen
 
     if (index === -1 && lives === 1) {
       lives = 0
-      this.setState({ lives })
+      this.setState({ lives, correctLetter: false })
       setTimeout(() => {
         this.setState({ lives, playing: false, countries: allCountries })
       }, 2000)
       return
     }
     if (index === -1 && lives !== 1) {
-      this.setState({ lives: lives - 1, keyClicks })
+      this.setState({ lives: lives - 1, clickedLetters, correctLetter: false })
       return
     }
 
@@ -108,17 +112,21 @@ export default class NewGame extends Component {
     for (let i = 0; i < capital.length; i++) {
       //Capital letter
       if (capital[i] === key) {
-        dash[i] = key
+        dash[i] = key.toUpperCase()
         hiddenLetters--
-        this.setState({ hiddenLetters })
-      } else if (capital[0] === key) {
-        dash[0] = key.toUpperCase()
+        this.setState({ hiddenLetters, correctLetter: true })
+        // } else if (capital[0] === key) {
+        //   dash[0] = key.toUpperCase()
+        // }
       }
     }
+
     if (hiddenLetters === 0) {
-      return this.setState({ playing: false, hiddenLetters })
+      return setTimeout(() => {
+        this.setState({ playing: false, hiddenLetters, correctLetter: false })
+      }, 1500)
     }
-    return this.setState({ dash, hiddenLetters, keyClicks })
+    return this.setState({ dash, hiddenLetters, clickedLetters })
   }
 
   render() {
@@ -129,7 +137,8 @@ export default class NewGame extends Component {
       lives,
       dash,
       playing,
-      keyClicks,
+      clickedLetters,
+      correctLetter,
       hiddenLetters
     } = this.state
 
@@ -150,8 +159,15 @@ export default class NewGame extends Component {
             </h3>
             <h3>{numberOfCountries} countries left</h3>
             <Question country={countryName} dash={dash} capital={capital} />
-            <Hangman lives={lives} />
-            <Keyboard onChoose={this.handleChoose} keyClicks={keyClicks} />
+            <Hangman
+              lives={lives}
+              correctLetter={correctLetter}
+              hiddenLetters={hiddenLetters}
+            />
+            <Keyboard
+              onChoose={this.handleChoose}
+              clickedLetters={clickedLetters}
+            />
           </div>
         )}
       </div>

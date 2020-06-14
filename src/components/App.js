@@ -9,5 +9,6 @@ function App() {
     </React.Fragment>
   )
 }
-
+// disable logging for the Sound library
+window.soundManager.setup({ debugMode: false })
 export default App
