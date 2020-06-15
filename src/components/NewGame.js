@@ -19,29 +19,32 @@ export default class NewGame extends Component {
       correctLetter: false,
       dash: null,
       lives: null,
-      playing: false
+      playing: false,
+      region: null
     }
   }
 
-  renderCountry(withSpecChars) {
-    withSpecChars = withSpecChars || null
-    let countries
+  renderCountry(data) {
+    // withSpecChars = withSpecChars || null
 
-    if (this.state.countries.length > 0) {
-      countries = this.state.countries
-    } else {
-      countries = allCountries
-    }
+    let countries = data
+
+    // if (this.state.countries.length > 0) {
+    //   countries = this.state.countries
+    // } else {
+    //   countries = allCountries
+    // }
     const randomNumber = Math.floor(Math.random() * countries.length)
     const country = countries[randomNumber]
+
     const countryName = country.name
     const numberOfCountries = countries.length
     countries = countries.filter(object => object !== country)
 
-    let capital
-    withSpecChars
-      ? (capital = country.capitalSpecial || country.capital)
-      : (capital = country.capital)
+    let capital = country.capital
+    // withSpecChars
+    //   ? (capital = country.capitalSpecial || country.capital)
+    //   : (capital = country.capital)
 
     let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
@@ -67,21 +70,31 @@ export default class NewGame extends Component {
       hiddenLetters,
       countries,
       clickedLetters: [],
-      lives: 6
+      lives: 6,
+      playing: true
     })
   }
 
-  handleNewGame = () => {
+  handleNewGame = region => {
+    let countries
+    if (region === 'Europe') {
+      countries = allCountries.filter(country => country.region === region)
+    } else if (region === 'recognised') {
+      countries = allCountries.filter(country => country[region] === true)
+    } else if (region === 'Western Europe') {
+      countries = allCountries.filter(country => country.subregion === region)
+    }
+
     this.setState({
-      playing: true,
-      countries: allCountries
+      countries,
+      region
     })
-    this.renderCountry()
+    this.renderCountry(countries)
   }
 
   handleContinue = () => {
-    this.renderCountry()
-    this.setState({ playing: true })
+    this.renderCountry(this.state.countries)
+    // this.setState({ playing: true })
   }
 
   handleChoose = key => {
@@ -139,7 +152,8 @@ export default class NewGame extends Component {
       playing,
       clickedLetters,
       correctLetter,
-      hiddenLetters
+      hiddenLetters,
+      region
     } = this.state
 
     return (
@@ -151,6 +165,7 @@ export default class NewGame extends Component {
             hiddenLetters={hiddenLetters}
             onContinue={this.handleContinue}
             numberOfCountries={numberOfCountries}
+            region={region}
           />
         ) : (
           <div className='container'>

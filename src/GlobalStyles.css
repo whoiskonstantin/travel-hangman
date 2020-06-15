@@ -71,7 +71,8 @@ button {
 }
 
 .start-game {
-  width: 100px;
+  width: 200px;
+  height: 1.5rem;
   margin-top: 2vh;
 }
 

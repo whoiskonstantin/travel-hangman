@@ -5,7 +5,8 @@ export default function Modal({
   lives,
   hiddenLetters,
   onContinue,
-  numberOfCountries
+  numberOfCountries,
+  region
 }) {
   // if player completed the whole game
   if (numberOfCountries === 1) {
@@ -13,7 +14,11 @@ export default function Modal({
       <div className='modal'>
         <h1>Congratulations!</h1>
         <h1>You passed the game!</h1>
-        <button type='button' className='start-game' onClick={() => newGame()}>
+        <button
+          type='button'
+          className='start-game'
+          onClick={() => newGame(region)}
+        >
           Restart
         </button>
       </div>
@@ -40,8 +45,38 @@ export default function Modal({
     return (
       <div className='modal'>
         <h1>Game Over</h1>
-        <button type='button' className='start-game' onClick={() => newGame()}>
+        <button
+          type='button'
+          className='start-game'
+          onClick={() => newGame(region)}
+        >
           Restart
+        </button>
+        <div className='container'>
+          <h3>or</h3>
+          <h3>Choose Different Game</h3>
+        </div>
+
+        <button
+          type='button'
+          className='start-game'
+          onClick={() => newGame('recognised')}
+        >
+          United Nations
+        </button>
+        <button
+          type='button'
+          className='start-game'
+          onClick={() => newGame('Europe')}
+        >
+          European Countries
+        </button>
+        <button
+          type='button'
+          className='start-game'
+          onClick={() => newGame('Western Europe')}
+        >
+          Western Europe
         </button>
       </div>
     )
@@ -50,8 +85,26 @@ export default function Modal({
   return (
     <div className='modal'>
       <h1>Welcome to Travel Hangman</h1>
-      <button type='button' className='start-game' onClick={() => newGame()}>
-        New Game
+      <button
+        type='button'
+        className='start-game'
+        onClick={() => newGame('recognised')}
+      >
+        United Nations
+      </button>
+      <button
+        type='button'
+        className='start-game'
+        onClick={() => newGame('Europe')}
+      >
+        European Countries
+      </button>
+      <button
+        type='button'
+        className='start-game'
+        onClick={() => newGame('Western Europe')}
+      >
+        Western Europe
       </button>
     </div>
   )
