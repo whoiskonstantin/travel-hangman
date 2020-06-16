@@ -22,9 +22,9 @@ export default class Keyboard extends Component {
 
   render() {
     return (
-      <div className='container'>
+      <div className='keyboard'>
         {this.state.keyboardRows.map(obj => (
-          <ul className='keyboard flex' key={obj.row.toString()}>
+          <ul className='keys flex' key={obj.row.toString()}>
             {obj.row.map(letter => (
               <li key={letter}>
                 <button

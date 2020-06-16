@@ -169,10 +169,12 @@ export default class NewGame extends Component {
           />
         ) : (
           <div className='container'>
-            <h3>
-              {lives} {lives === 1 ? 'life' : 'lives'} left
-            </h3>
-            <h3>{numberOfCountries} countries left</h3>
+            <div className='flex-between'>
+              <h3>
+                {lives} {lives === 1 ? 'life' : 'lives'} left
+              </h3>
+              <h3>{numberOfCountries} countries left</h3>
+            </div>
             <Question country={countryName} dash={dash} capital={capital} />
             <Hangman
               lives={lives}
