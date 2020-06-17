@@ -1,78 +1,50 @@
-import React, { Component } from 'react'
-import { allCountries } from '../resources/allCountries'
-import { keyboard } from '../resources/specialCharacters'
-import Keyboard from './Keyboard'
+handleChoose = key => {
+  let { dash, capital, lives, hiddenLetters, clickedLetters } = this.state
 
-export default class NewGame extends Component {
-  state = {
-    countries: allCountries,
-    currentCountry: null,
-    capital: null,
-    dash: null,
-    keyboardRows: [
-      { row: keyboard.slice(0, 10) },
-      { row: keyboard.slice(10, 19) },
-      { row: keyboard.slice(19, 26) }
-    ]
+  // Check if key has been clicked before
+  // Return if the key has been pressed
+  if (clickedLetters.indexOf(key) !== -1) {
+    return
+  }
+  clickedLetters.push(key)
+  // If key hasn't been clicked, add the key co the clickedLetters array
+  this.setState({ clickedLetters })
+  // console.log(this.state.clickedLetters)
+
+  // Check if the worng letter is chosen and if it was the last life
+  // Update the state
+  const index = capital.indexOf(key)
+  if (index === -1 && lives === 1) {
+    setTimeout(() => {
+      this.setState({
+        lives: 0,
+        playing: false,
+        correctLetter: false,
+        countries: allCountries
+      })
+    }, 2000)
+    return
   }
 
-  componentDidMount() {
-    this.renderCountry()
-    this.renderCapital()
+  // If it wasn't the last life update the state
+  if (index === -1 && lives !== 1) {
+    this.setState({ lives: lives - 1, correctLetter: false })
+    return
   }
 
-  renderCountry() {
-    const randomNumber = Math.floor(Math.random() * this.state.countries.length)
-    const pickedCountry = this.state.countries[randomNumber]
-    const currentCountry = pickedCountry.name
-    this.setState({ currentCountry })
+  // Render the letter
+  for (let i = 0; i < capital.length; i++) {
+    if (capital[i] === key) {
+      dash[i] = key.toUpperCase()
+      hiddenLetters--
+      this.setState({ hiddenLetters, correctLetter: true })
+    }
   }
 
-  renderCapital(withSpecChars) {
-    withSpecChars = withSpecChars || null
-    const { currentCountry } = this.state
-    let capital
-    withSpecChars
-      ? (capital = currentCountry.capitalSpecial || currentCountry.capital)
-      : (capital = currentCountry.capital)
-    capital = [...capital.toLowerCase()]
-    const length = capital
-    let dash = [...'_'.repeat(length)]
-    console.log(capital)
-    this.setState({ capital, dash })
-    setTimeout(() => console.log(this.state.capital), 3000)
+  if (hiddenLetters === 0) {
+    return setTimeout(() => {
+      this.setState({ playing: false, hiddenLetters, correctLetter: false })
+    }, 2000)
   }
-
-  handleChoose = key => {
-    console.log('clicked:', key)
-    console.log(this.state.capital)
-    const capital = [...this.state.capital]
-    const dash = this.state.dash
-    capital.forEach(letter => {
-      if (letter === key) {
-        // console.log(dash)
-        const index = capital.indexOf(letter)
-        dash[index] = key
-        this.setState({ capital, dash })
-      } else {
-        return console.log('Wrong letter!')
-      }
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>New Game</h1>
-        <div className='container'>
-          <h3>What is the capital of {this.state.currentCountry}?</h3>
-          {this.state.dash}
-          <Keyboard
-            keyboard={this.state.keyboardRows}
-            onChoose={this.handleChoose}
-          />
-        </div>
-      </div>
-    )
-  }
+  return this.setState({ dash, hiddenLetters })
 }

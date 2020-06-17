@@ -25,27 +25,12 @@ export default class NewGame extends Component {
   }
 
   renderCountry(data) {
-    // withSpecChars = withSpecChars || null
-
-    let countries = data
-
-    // if (this.state.countries.length > 0) {
-    //   countries = this.state.countries
-    // } else {
-    //   countries = allCountries
-    // }
-    const randomNumber = Math.floor(Math.random() * countries.length)
-    const country = countries[randomNumber]
-
+    const randomNumber = Math.floor(Math.random() * data.length)
+    const country = data[randomNumber]
     const countryName = country.name
-    const numberOfCountries = countries.length
-    countries = countries.filter(object => object !== country)
-
+    const numberOfCountries = data.length
+    const countries = data.filter(object => object !== country)
     let capital = country.capital
-    // withSpecChars
-    //   ? (capital = country.capitalSpecial || country.capital)
-    //   : (capital = country.capital)
-
     let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
     let dash = [...'_'.repeat(hiddenLetters)]
@@ -94,7 +79,6 @@ export default class NewGame extends Component {
 
   handleContinue = () => {
     this.renderCountry(this.state.countries)
-    // this.setState({ playing: true })
   }
 
   handleChoose = key => {
