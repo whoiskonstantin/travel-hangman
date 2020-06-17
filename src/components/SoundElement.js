@@ -22,26 +22,16 @@ export default class SoundElement extends Component {
   }
 
   render() {
-    // console.log(this.props.correctLetter)
     const { lives } = this.props
     if (this.props.hiddenLetters === 0) {
       return (
-        <React.Fragment>
-          <Sound
-            url={Kids}
-            playStatus={Sound.status.PLAYING}
-            onLoading={this.handleSongLoading}
-            onPlaying={this.handleSongPlaying}
-            onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-          <Sound
-            url={Key}
-            playStatus={Sound.status.PLAYING}
-            onLoading={this.handleSongLoading}
-            onPlaying={this.handleSongPlaying}
-            onFinishedPlaying={this.handleSongFinishedPlaying}
-          />
-        </React.Fragment>
+        <Sound
+          url={Kids}
+          playStatus={Sound.status.PLAYING}
+          onLoading={this.handleSongLoading}
+          onPlaying={this.handleSongPlaying}
+          onFinishedPlaying={this.handleSongFinishedPlaying}
+        />
       )
     }
     if (this.props.correctLetter === true) {
