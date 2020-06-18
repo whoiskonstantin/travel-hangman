@@ -27,18 +27,17 @@ export default class NewGame extends Component {
       playing: false,
       region: null,
       audio: {
-        Key,
-        Whoosh,
-        Impact,
-        Pain,
-        Kids
+        keypress: new Audio(Key),
+        whoosh: new Audio(Whoosh),
+        impact: new Audio(Impact),
+        pain: new Audio(Pain),
+        kids: new Audio(Kids)
       }
     }
   }
 
   renderCountry(data) {
-    const whooshAudio = new Audio(this.state.audio.Whoosh)
-    whooshAudio.play()
+    this.state.audio.whoosh.play()
     const randomNumber = Math.floor(Math.random() * data.length)
     const country = data[randomNumber]
     const countryName = country.name
@@ -104,11 +103,7 @@ export default class NewGame extends Component {
       clickedLetters,
       audio
     } = this.state
-    const keyAudio = new Audio(audio.Key)
-    const impactAudio = new Audio(audio.Impact)
-    const painAudio = new Audio(audio.Pain)
-    const kidsAudio = new Audio(audio.Kids)
-    const whooshAudio = new Audio(audio.Whoosh)
+
     // Return if key has been clicked
     if (clickedLetters.indexOf(key) !== -1) {
       return
@@ -121,14 +116,14 @@ export default class NewGame extends Component {
     if (index === -1 && lives === 1) {
       lives = 0
       this.setState({ lives, correctLetter: false })
-      painAudio.play()
+      audio.pain.play()
       setTimeout(() => {
         this.setState({ lives, playing: false, countries: allCountries })
       }, 2000)
       return
     }
     if (index === -1 && lives !== 1) {
-      lives > 2 ? impactAudio.play() : whooshAudio.play()
+      lives > 2 ? audio.impact.play() : audio.whoosh.play()
 
       this.setState({ lives: lives - 1, correctLetter: false })
       return
@@ -146,15 +141,15 @@ export default class NewGame extends Component {
 
     if (hiddenLetters === 0) {
       return (
-        keyAudio.play(),
-        kidsAudio.play(),
+        audio.keypress.play(),
+        audio.kids.play(),
         setTimeout(() => {
           this.setState({ playing: false, hiddenLetters, correctLetter: false })
         }, 2000)
       )
     }
 
-    keyAudio.play()
+    audio.keypress.play()
     return this.setState({ dash, hiddenLetters, clickedLetters })
   }
 
