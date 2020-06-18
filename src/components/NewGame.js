@@ -5,6 +5,11 @@ import Keyboard from './Keyboard'
 import Question from './Question'
 import Modal from './Modal'
 import Hangman from './Hangman'
+import Key from '../resources/sounds/key.mp3'
+import Whoosh from '../resources/sounds/whoosh.mp3'
+import Impact from '../resources/sounds/impact.mp3'
+import Pain from '../resources/sounds/pain.mp3'
+import Kids from '../resources/sounds/kids.mp3'
 
 export default class NewGame extends Component {
   constructor(props) {
@@ -20,11 +25,20 @@ export default class NewGame extends Component {
       dash: null,
       lives: null,
       playing: false,
-      region: null
+      region: null,
+      audio: {
+        Key,
+        Whoosh,
+        Impact,
+        Pain,
+        Kids
+      }
     }
   }
 
   renderCountry(data) {
+    const whooshAudio = new Audio(this.state.audio.Whoosh)
+    whooshAudio.play()
     const randomNumber = Math.floor(Math.random() * data.length)
     const country = data[randomNumber]
     const countryName = country.name
@@ -46,7 +60,7 @@ export default class NewGame extends Component {
       })
     )
 
-    console.log(capital)
+    // console.log(capital)
     this.setState({
       countryName,
       numberOfCountries,
@@ -82,26 +96,42 @@ export default class NewGame extends Component {
   }
 
   handleChoose = key => {
-    let { dash, capital, lives, hiddenLetters, clickedLetters } = this.state
-
+    let {
+      dash,
+      capital,
+      lives,
+      hiddenLetters,
+      clickedLetters,
+      audio
+    } = this.state
+    const keyAudio = new Audio(audio.Key)
+    const impactAudio = new Audio(audio.Impact)
+    const painAudio = new Audio(audio.Pain)
+    const kidsAudio = new Audio(audio.Kids)
+    const whooshAudio = new Audio(audio.Whoosh)
+    // Return if key has been clicked
     if (clickedLetters.indexOf(key) !== -1) {
       return
     }
     clickedLetters.push(key)
+    // this.setState({ clickedLetters: clickedLetters.push(key) })
     const index = capital.indexOf(key)
 
-    // Check if the worng letter is chosen
+    // Check if the wrong letter is chosen
 
     if (index === -1 && lives === 1) {
       lives = 0
       this.setState({ lives, correctLetter: false })
+      painAudio.play()
       setTimeout(() => {
         this.setState({ lives, playing: false, countries: allCountries })
       }, 2000)
       return
     }
     if (index === -1 && lives !== 1) {
-      this.setState({ lives: lives - 1, clickedLetters, correctLetter: false })
+      lives > 2 ? impactAudio.play() : whooshAudio.play()
+
+      this.setState({ lives: lives - 1, correctLetter: false })
       return
     }
 
@@ -112,17 +142,20 @@ export default class NewGame extends Component {
         dash[i] = key.toUpperCase()
         hiddenLetters--
         this.setState({ hiddenLetters, correctLetter: true })
-        // } else if (capital[0] === key) {
-        //   dash[0] = key.toUpperCase()
-        // }
       }
     }
 
     if (hiddenLetters === 0) {
-      return setTimeout(() => {
-        this.setState({ playing: false, hiddenLetters, correctLetter: false })
-      }, 1500)
+      return (
+        keyAudio.play(),
+        kidsAudio.play(),
+        setTimeout(() => {
+          this.setState({ playing: false, hiddenLetters, correctLetter: false })
+        }, 2000)
+      )
     }
+
+    keyAudio.play()
     return this.setState({ dash, hiddenLetters, clickedLetters })
   }
 
@@ -135,7 +168,6 @@ export default class NewGame extends Component {
       dash,
       playing,
       clickedLetters,
-      correctLetter,
       hiddenLetters,
       region
     } = this.state
@@ -160,11 +192,7 @@ export default class NewGame extends Component {
               <h3>{numberOfCountries} countries left</h3>
             </div>
             <Question country={countryName} dash={dash} capital={capital} />
-            <Hangman
-              lives={lives}
-              correctLetter={correctLetter}
-              hiddenLetters={hiddenLetters}
-            />
+            <Hangman lives={lives} />
             <Keyboard
               onChoose={this.handleChoose}
               clickedLetters={clickedLetters}
