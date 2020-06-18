@@ -1,7 +1,24 @@
-import React, { Component } from 'react'
+import React, { Component, memo } from 'react'
+import PropTypes from 'prop-types'
 import { keyboard } from '../resources/specialCharacters'
 
+const Key = memo(({ letter = '', onClickHandler, className }) => (
+  <li>
+    <button
+      className={className}
+      onClick={() => onClickHandler(letter)}
+      type='button'
+    >
+      {letter.toUpperCase()}
+    </button>
+  </li>
+))
+
 export default class Keyboard extends Component {
+  static propTypes = {
+    onChoose: PropTypes.func.isRequired
+  }
+
   state = {
     keyboardRows: [
       { row: keyboard.slice(0, 10) },
@@ -26,16 +43,12 @@ export default class Keyboard extends Component {
         {this.state.keyboardRows.map(obj => (
           <ul className='keys flex' key={obj.row.toString()}>
             {obj.row.map(letter => (
-              <li key={letter}>
-                <button
-                  className={this.toggleClass(letter)}
-                  onClick={() => {
-                    this.props.onChoose(letter)
-                  }}
-                >
-                  {letter.toUpperCase()}
-                </button>
-              </li>
+              <Key
+                className={this.toggleClass(letter)}
+                key={letter}
+                letter={letter}
+                onClickHandler={this.props.onChoose}
+              />
             ))}
           </ul>
         ))}

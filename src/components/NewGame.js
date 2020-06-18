@@ -114,7 +114,6 @@ export default class NewGame extends Component {
       return
     }
     clickedLetters.push(key)
-    // this.setState({ clickedLetters: clickedLetters.push(key) })
     const index = capital.indexOf(key)
 
     // Check if the wrong letter is chosen
