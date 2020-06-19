@@ -88,8 +88,8 @@ export default class NewGame extends Component {
     let countries
     if (region === 'Europe') {
       countries = allCountries.filter(country => country.region === region)
-    } else if (region === 'recognised') {
-      countries = allCountries.filter(country => country[region] === true)
+    } else if (region === 'United Nations') {
+      countries = allCountries.filter(country => country.recognised === true)
     } else if (region === 'Western Europe') {
       countries = allCountries.filter(country => country.subregion === region)
     }
