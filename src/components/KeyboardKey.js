@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 
 export const KeyboardKey = memo(
   ({ letter = '', onClickHandler, className }) => {
-    console.log('render')
     return (
       <li>
         <button

@@ -6,7 +6,10 @@ export default function Question({ country, dash }) {
       <h2>What is the capital of {country}?</h2>
       <ul>
         {dash.map((item, index) => (
-          <li key={index} className='hidden-word'>
+          <li
+            key={index}
+            className={`hidden-word ${item === ' ' ? 'space' : ''}`}
+          >
             {item}
           </li>
         ))}

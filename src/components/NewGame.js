@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { allCountries } from '../resources/allCountries'
-import { ponctuation } from '../resources/specialCharacters'
 import Keyboard from './Keyboard'
 import Question from './Question'
 import Modal from './Modal'
@@ -46,19 +45,31 @@ export default class NewGame extends Component {
     let capital = country.capital
     let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
-    let dash = [...'_'.repeat(hiddenLetters)]
+    // let dash = [...'_'.repeat(hiddenLetters)]
+    let dash = []
 
     // Helping player by rendering special chars like
     // comas, spaces, dashes, etc...
-    capital.forEach(item =>
-      ponctuation.forEach(char => {
-        if (item === char) {
-          dash[capital.indexOf(item)] = char
-          hiddenLetters--
-        }
-      })
-    )
 
+    // console.log(dash)
+    // console.log(capital)
+    console.log(hiddenLetters)
+    for (let index = 0; index < capital.length; index++) {
+      if (
+        capital[index] === ' ' ||
+        capital[index] === "'" ||
+        capital[index] === '-' ||
+        capital[index] === '.' ||
+        capital[index] === ','
+      ) {
+        dash.push(capital[index])
+        hiddenLetters--
+      } else {
+        dash.push('__')
+      }
+    }
+
+    console.log(hiddenLetters)
     // console.log(capital)
     this.setState({
       countryName,
@@ -167,7 +178,7 @@ export default class NewGame extends Component {
     } = this.state
 
     return (
-      <div className='container full-screen'>
+      <div className='container'>
         {!playing ? (
           <Modal
             newGame={this.handleNewGame}
@@ -178,8 +189,8 @@ export default class NewGame extends Component {
             region={region}
           />
         ) : (
-          <div className='container'>
-            <div className='flex-between'>
+          <React.Fragment>
+            <div className='flex-between game-info'>
               <h3>
                 {lives} {lives === 1 ? 'life' : 'lives'} left
               </h3>
@@ -191,7 +202,7 @@ export default class NewGame extends Component {
               onChoose={this.handleChoose}
               clickedLetters={clickedLetters}
             />
-          </div>
+          </React.Fragment>
         )}
       </div>
     )
