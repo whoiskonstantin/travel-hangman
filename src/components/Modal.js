@@ -30,7 +30,10 @@ export default class Modal extends Component {
       hiddenLetters,
       onContinue,
       numberOfCountries,
-      region
+      region,
+      handleInputChange,
+      un,
+      allCountries
     } = this.props
 
     const { onComplete, onPass, onGameOver, onWelcome } = this.state
@@ -44,6 +47,9 @@ export default class Modal extends Component {
           region={region}
           countries={numberOfCountries}
           lives={lives}
+          allCountries={allCountries}
+          handleInputChange={handleInputChange}
+          un={un}
         />
       )
     }
@@ -69,6 +75,9 @@ export default class Modal extends Component {
           region={region}
           countries={numberOfCountries}
           lives={lives}
+          handleInputChange={handleInputChange}
+          allCountries={allCountries}
+          un={un}
         />
       )
     }
@@ -79,6 +88,9 @@ export default class Modal extends Component {
         submessage={onWelcome.submessage}
         onClick={newGame}
         region={region}
+        handleInputChange={handleInputChange}
+        allCountries={allCountries}
+        un={un}
       />
     )
   }

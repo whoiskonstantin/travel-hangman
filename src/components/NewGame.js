@@ -14,14 +14,14 @@ export default class NewGame extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      countries: [],
+      countries: allCountries.filter(country => country.recognised === true),
       numberOfCountries: null,
       countryName: null,
       capital: null,
       hiddenLetters: null,
       clickedLetters: [],
-      correctLetter: false,
       dash: null,
+      un: true,
       lives: null,
       playing: false,
       region: null,
@@ -35,6 +35,21 @@ export default class NewGame extends Component {
     }
   }
 
+  handleInputChange = event => {
+    const target = event.target
+    const value = target.checked
+    let countries
+    if (value === true) {
+      countries = allCountries.filter(country => country.recognised === true)
+    } else if (value === false) {
+      countries = allCountries
+    }
+    this.setState({
+      un: value,
+      countries
+    })
+  }
+
   renderCountry(data) {
     this.state.audio.whoosh.play()
     const randomNumber = Math.floor(Math.random() * data.length)
@@ -45,15 +60,10 @@ export default class NewGame extends Component {
     let capital = country.capital
     let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
-    // let dash = [...'_'.repeat(hiddenLetters)]
-    let dash = []
 
     // Helping player by rendering special chars like
     // comas, spaces, dashes, etc...
-
-    // console.log(dash)
-    // console.log(capital)
-    console.log(hiddenLetters)
+    let dash = []
     for (let index = 0; index < capital.length; index++) {
       if (
         capital[index] === ' ' ||
@@ -69,8 +79,6 @@ export default class NewGame extends Component {
       }
     }
 
-    console.log(hiddenLetters)
-    // console.log(capital)
     this.setState({
       countryName,
       numberOfCountries,
@@ -84,21 +92,39 @@ export default class NewGame extends Component {
     })
   }
 
-  handleNewGame = region => {
-    let countries
-    if (region === 'Europe') {
-      countries = allCountries.filter(country => country.region === region)
-    } else if (region === 'United Nations') {
-      countries = allCountries.filter(country => country.recognised === true)
-    } else if (region === 'Western Europe') {
-      countries = allCountries.filter(country => country.subregion === region)
+  handleNewGame = (region, type) => {
+    const updateState = () => {
+      this.setState({
+        countries,
+        region
+      })
+      this.renderCountry(countries)
     }
-
-    this.setState({
-      countries,
-      region
-    })
-    this.renderCountry(countries)
+    let countries
+    if (type === 'regions') {
+      if (this.state.un === true) {
+        countries = allCountries.filter(country => country.recognised === true)
+        countries = countries.filter(country => country.region === region)
+        return updateState()
+      }
+      if (this.state.un === false) {
+        countries = allCountries
+        countries = countries.filter(country => country.region === region)
+        return updateState()
+      }
+    }
+    if (type === 'subregions') {
+      if (this.state.un === true) {
+        countries = allCountries.filter(country => country.recognised === true)
+        countries = countries.filter(country => country.subregion === region)
+        return updateState()
+      }
+      if (this.state.un === false) {
+        countries = allCountries
+        countries = countries.filter(country => country.subregion === region)
+        return updateState()
+      }
+    }
   }
 
   handleContinue = () => {
@@ -112,7 +138,9 @@ export default class NewGame extends Component {
       lives,
       hiddenLetters,
       clickedLetters,
-      audio
+      audio,
+      countries,
+      un
     } = this.state
 
     // Return if key has been clicked
@@ -126,17 +154,33 @@ export default class NewGame extends Component {
 
     if (index === -1 && lives === 1) {
       lives = 0
-      this.setState({ lives, correctLetter: false })
+      this.setState({ lives })
       audio.pain.play()
-      setTimeout(() => {
-        this.setState({ lives, playing: false, countries: allCountries })
-      }, 2000)
-      return
+      if (un) {
+        return setTimeout(() => {
+          this.setState({
+            lives,
+            playing: false,
+            countries: allCountries.filter(
+              country => country.recognised === true
+            )
+          })
+        }, 2000)
+      }
+      if (!un) {
+        return setTimeout(() => {
+          this.setState({
+            lives,
+            playing: false,
+            countries: allCountries
+          })
+        }, 2000)
+      }
     }
     if (index === -1 && lives !== 1) {
       lives > 2 ? audio.impact.play() : audio.whoosh.play()
 
-      this.setState({ lives: lives - 1, correctLetter: false })
+      this.setState({ lives: lives - 1 })
       return
     }
 
@@ -146,18 +190,43 @@ export default class NewGame extends Component {
       if (capital[i] === key) {
         dash[i] = key.toUpperCase()
         hiddenLetters--
-        this.setState({ hiddenLetters, correctLetter: true })
+        this.setState({ hiddenLetters })
       }
     }
 
-    if (hiddenLetters === 0) {
+    if (hiddenLetters === 0 && countries.length !== 0) {
       return (
         audio.keypress.play(),
         audio.kids.play(),
         setTimeout(() => {
-          this.setState({ playing: false, hiddenLetters, correctLetter: false })
-        }, 2000)
+          this.setState({ playing: false, hiddenLetters })
+        }, 1000)
       )
+    }
+    // Runs on game completion
+    if (hiddenLetters === 0 && countries.length === 0) {
+      audio.keypress.play()
+      audio.kids.play()
+      if (un) {
+        return setTimeout(() => {
+          this.setState({
+            playing: false,
+            hiddenLetters,
+            countries: allCountries.filter(
+              country => country.recognised === true
+            )
+          })
+        }, 1000)
+      }
+      if (!un) {
+        return setTimeout(() => {
+          this.setState({
+            playing: false,
+            hiddenLetters,
+            countries: allCountries
+          })
+        }, 1000)
+      }
     }
 
     audio.keypress.play()
@@ -174,9 +243,11 @@ export default class NewGame extends Component {
       playing,
       clickedLetters,
       hiddenLetters,
-      region
+      region,
+      un,
+      countries
     } = this.state
-
+    console.log(capital)
     return (
       <div className='container'>
         {!playing ? (
@@ -187,6 +258,9 @@ export default class NewGame extends Component {
             onContinue={this.handleContinue}
             numberOfCountries={numberOfCountries}
             region={region}
+            allCountries={countries}
+            un={un}
+            handleInputChange={this.handleInputChange}
           />
         ) : (
           <React.Fragment>
