@@ -207,7 +207,7 @@ export default class Hangman extends Component {
   }
   render() {
     return (
-      <div className='svg-container'>
+      <div className='svg-container border'>
         <Gallows />
       </div>
     )

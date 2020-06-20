@@ -48,6 +48,7 @@ export default class NewGame extends Component {
       un: value,
       countries
     })
+    this.state.audio.keypress.play()
   }
 
   renderCountry(data) {
@@ -101,6 +102,16 @@ export default class NewGame extends Component {
       this.renderCountry(countries)
     }
     let countries
+    if (type === 'All Countries') {
+      if (this.state.un === true) {
+        countries = allCountries.filter(country => country.recognised === true)
+        return updateState()
+      }
+      if (this.state.un === false) {
+        countries = allCountries
+        return updateState()
+      }
+    }
     if (type === 'regions') {
       if (this.state.un === true) {
         countries = allCountries.filter(country => country.recognised === true)
@@ -249,7 +260,11 @@ export default class NewGame extends Component {
     } = this.state
     console.log(capital)
     return (
-      <div className='container'>
+      <div
+        className={`container flex-column ${
+          playing ? 'flex-between' : 'flex-center'
+        }`}
+      >
         {!playing ? (
           <Modal
             newGame={this.handleNewGame}

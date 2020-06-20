@@ -37,24 +37,12 @@ export const GameFinished = ({
     'Polynesia'
   ]
   return (
-    <div className='modal'>
+    <div className='modal border'>
       <h1>{message}</h1>
       <h3>
         {submessage}
         {region}
       </h3>
-      {countries === 1 || lives === 0 ? (
-        <div>
-          <button
-            type='button'
-            className='start-game'
-            onClick={() => onClick(region)}
-          >
-            Restart
-          </button>
-          <h3>Play New Game</h3>
-        </div>
-      ) : null}
       <div>
         <h4 className={`all ${un ? 'disabled' : 'active'}`}>All</h4>
         <label className='switch'>
@@ -72,7 +60,7 @@ export const GameFinished = ({
       <button
         type='button'
         className='start-game'
-        onClick={() => onClick('All Countries')}
+        onClick={() => onClick('All Countries', 'All Countries')}
       >
         All Countries ({allCountries.length})
       </button>
@@ -105,7 +93,7 @@ export const GameFinished = ({
 
 export const RoundComplete = ({ message, submessage, region, onClick }) => {
   return (
-    <div className='modal'>
+    <div className='modal border'>
       <h1>{message}</h1>
       <h1>{submessage}</h1>
       <button
