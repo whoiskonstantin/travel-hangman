@@ -12,9 +12,8 @@ export const GameFinished = ({
   allCountries
 }) => {
   const regions = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania']
-  const subregions = [
-    'Southern Asia',
-    'Southern Europe',
+  const subregions = ['Southern Asia', 'Southern Europe']
+  const unusedSubregions = [
     'Northern Africa',
     'Middle Africa',
     'Caribbean',
