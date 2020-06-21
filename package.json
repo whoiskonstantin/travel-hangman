@@ -9,6 +9,7 @@
     "gsap": "file:src/gsap-bonus.tgz",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-div-100vh": "^0.3.8",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-sound": "^1.2.0"

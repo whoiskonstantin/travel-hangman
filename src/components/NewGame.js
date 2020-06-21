@@ -9,6 +9,7 @@ import Whoosh from '../resources/sounds/whoosh.mp3'
 import Impact from '../resources/sounds/impact.mp3'
 import Pain from '../resources/sounds/pain.mp3'
 import Kids from '../resources/sounds/kids.mp3'
+import Div100vh from 'react-div-100vh'
 
 export default class NewGame extends Component {
   constructor(props) {
@@ -260,40 +261,42 @@ export default class NewGame extends Component {
     } = this.state
     console.log(capital)
     return (
-      <div
-        className={`container flex-column ${
-          playing ? 'flex-between' : 'flex-center'
-        }`}
-      >
-        {!playing ? (
-          <Modal
-            newGame={this.handleNewGame}
-            lives={lives}
-            hiddenLetters={hiddenLetters}
-            onContinue={this.handleContinue}
-            numberOfCountries={numberOfCountries}
-            region={region}
-            allCountries={countries}
-            un={un}
-            handleInputChange={this.handleInputChange}
-          />
-        ) : (
-          <React.Fragment>
-            <div className='flex-between game-info'>
-              <h3>
-                {lives} {lives === 1 ? 'life' : 'lives'} left
-              </h3>
-              <h3>{numberOfCountries} countries left</h3>
-            </div>
-            <Question country={countryName} dash={dash} capital={capital} />
-            <Hangman lives={lives} />
-            <Keyboard
-              onChoose={this.handleChoose}
-              clickedLetters={clickedLetters}
+      <Div100vh>
+        <div
+          className={`container flex-column ${
+            playing ? 'flex-between' : 'flex-center'
+          }`}
+        >
+          {!playing ? (
+            <Modal
+              newGame={this.handleNewGame}
+              lives={lives}
+              hiddenLetters={hiddenLetters}
+              onContinue={this.handleContinue}
+              numberOfCountries={numberOfCountries}
+              region={region}
+              allCountries={countries}
+              un={un}
+              handleInputChange={this.handleInputChange}
             />
-          </React.Fragment>
-        )}
-      </div>
+          ) : (
+            <React.Fragment>
+              <div className='flex-between game-info'>
+                <h3>
+                  {lives} {lives === 1 ? 'life' : 'lives'} left
+                </h3>
+                <h3>{numberOfCountries} countries left</h3>
+              </div>
+              <Question country={countryName} dash={dash} capital={capital} />
+              <Hangman lives={lives} />
+              <Keyboard
+                onChoose={this.handleChoose}
+                clickedLetters={clickedLetters}
+              />
+            </React.Fragment>
+          )}
+        </div>
+      </Div100vh>
     )
   }
 }

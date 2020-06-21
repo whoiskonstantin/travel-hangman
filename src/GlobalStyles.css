@@ -41,27 +41,13 @@ button {
   outline: none;
 }
 
-.navitem {
-  margin-left: 15px;
-  height: 15px;
-  width: 15px;
-}
-
-.navbar {
-  padding: 15px 15px;
-  height: 5vh;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .container {
-  height: 100vh;
+  height: 100%;
   text-align: center;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
   color: var(--text-color);
-  overflow: hidden;
 }
 
 .flex-column {
