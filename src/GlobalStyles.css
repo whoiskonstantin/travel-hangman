@@ -21,15 +21,21 @@ h3 {
   text-align: center;
 }
 
+h2.title {
+  margin: 6px 0 0 10px;
+  color: #643500;
+  font-size: 1.2rem;
+}
+
 h4.menu {
   font-style: italic;
   display: block;
   margin-top: 0.8rem;
 }
 
-.navlist,
-.navitem {
+.game-info h3 {
   display: inline-block;
+  padding: 5px 5px 0 0;
 }
 
 button {
@@ -57,6 +63,13 @@ button {
 .flex-between {
   display: flex;
   justify-content: space-between;
+}
+
+.icon {
+  display: inline-block;
+  margin: 5px 5px 0 5px;
+  width: 20px;
+  height: 20px;
 }
 
 .flex {

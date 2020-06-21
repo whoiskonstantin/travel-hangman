@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Div100vh from 'react-div-100vh'
 import { allCountries } from '../resources/allCountries'
 import Keyboard from './Keyboard'
 import Question from './Question'
@@ -9,7 +10,8 @@ import Whoosh from '../resources/sounds/whoosh.mp3'
 import Impact from '../resources/sounds/impact.mp3'
 import Pain from '../resources/sounds/pain.mp3'
 import Kids from '../resources/sounds/kids.mp3'
-import Div100vh from 'react-div-100vh'
+import { ReactComponent as Heart } from '../resources/heart.svg'
+import { ReactComponent as Flag } from '../resources/flag.svg'
 
 export default class NewGame extends Component {
   constructor(props) {
@@ -282,10 +284,19 @@ export default class NewGame extends Component {
           ) : (
             <React.Fragment>
               <div className='flex-between game-info'>
-                <h3>
-                  {lives} {lives === 1 ? 'life' : 'lives'} left
-                </h3>
-                <h3>{numberOfCountries} countries left</h3>
+                <div className='container'>
+                  <div className='icon'>
+                    <Heart />
+                  </div>
+                  <h3>{lives}</h3>
+                </div>
+                <h2 className='title'>Travel Hangman</h2>
+                <div className='container'>
+                  <div className='icon'>
+                    <Flag />
+                  </div>
+                  <h3>{numberOfCountries}</h3>
+                </div>
               </div>
               <Question country={countryName} dash={dash} capital={capital} />
               <Hangman lives={lives} />
