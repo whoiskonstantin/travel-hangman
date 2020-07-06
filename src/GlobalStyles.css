@@ -71,7 +71,9 @@ button {
   width: 20px;
   height: 20px;
 }
-
+.corner-info {
+  margin: 3px;
+}
 .flex {
   display: flex;
   justify-content: center;
@@ -119,11 +121,9 @@ button {
   }
 }
 
-@media (min-width: 375px) {
-  .keys li {
-    width: 1.9rem;
-    height: 1.9rem;
-    padding: 3px;
+@media (min-width: 600px) {
+  .corner-info {
+    margin: 3px 1rem;
   }
 }
 
@@ -181,19 +181,43 @@ h4.active.all {
   overflow: scroll;
   padding-bottom: 1rem;
 }
-
+.submessage {
+  margin: 0;
+}
 .border {
   background-color: var(--main-bg-color);
   border-radius: 1rem;
   box-shadow: 5px 5px 5px rgba(70, 53, 41, 0.795);
 }
 
+h3.settings {
+  margin-top: 0.5rem;
+}
+
+.switch-text {
+  width: 3rem;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.switch-container {
+  align-items: baseline;
+}
+.no_highlights {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 /* SLIDER */
 
 /* The switch - the box around the slider */
 .switch {
   position: relative;
-  margin: 10px 10px 0 10px;
+  margin: 3px 10px;
   display: inline-block;
   width: 40px;
   height: 20px;

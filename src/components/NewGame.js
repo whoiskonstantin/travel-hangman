@@ -28,6 +28,7 @@ export default class NewGame extends Component {
       lives: null,
       playing: false,
       region: null,
+      sound: true,
       audio: {
         keypress: new Audio(Key),
         whoosh: new Audio(Whoosh),
@@ -38,7 +39,7 @@ export default class NewGame extends Component {
     }
   }
 
-  handleInputChange = event => {
+  handleModeChange = event => {
     const target = event.target
     const value = target.checked
     let countries
@@ -51,11 +52,31 @@ export default class NewGame extends Component {
       un: value,
       countries
     })
+
+    if (this.state.sound) {
+      this.state.audio.keypress.play()
+    }
+  }
+
+  handleSoundChange = event => {
+    const target = event.target
+    const value = target.checked
+    if (value === false) {
+      return this.setState({
+        sound: false
+      })
+    }
+    this.setState({
+      sound: true
+    })
+
     this.state.audio.keypress.play()
   }
 
   renderCountry(data) {
-    this.state.audio.whoosh.play()
+    if (this.state.sound) {
+      this.state.audio.whoosh.play()
+    }
     const randomNumber = Math.floor(Math.random() * data.length)
     const country = data[randomNumber]
     const countryName = country.name
@@ -169,7 +190,9 @@ export default class NewGame extends Component {
     if (index === -1 && lives === 1) {
       lives = 0
       this.setState({ lives })
-      audio.pain.play()
+      if (this.state.sound) {
+        audio.pain.play()
+      }
       if (un) {
         return setTimeout(() => {
           this.setState({
@@ -192,7 +215,9 @@ export default class NewGame extends Component {
       }
     }
     if (index === -1 && lives !== 1) {
-      lives > 2 ? audio.impact.play() : audio.whoosh.play()
+      if (this.state.sound) {
+        lives > 2 ? audio.impact.play() : audio.whoosh.play()
+      }
 
       this.setState({ lives: lives - 1 })
       return
@@ -209,18 +234,21 @@ export default class NewGame extends Component {
     }
 
     if (hiddenLetters === 0 && countries.length !== 0) {
-      return (
-        audio.keypress.play(),
-        audio.kids.play(),
-        setTimeout(() => {
-          this.setState({ playing: false, hiddenLetters })
-        }, 1000)
-      )
+      if (this.state.sound) {
+        audio.keypress.play()
+        audio.kids.play()
+      }
+      return setTimeout(() => {
+        this.setState({ playing: false, hiddenLetters })
+      }, 1000)
     }
     // Runs on game completion
     if (hiddenLetters === 0 && countries.length === 0) {
-      audio.keypress.play()
-      audio.kids.play()
+      if (this.state.sound) {
+        audio.keypress.play()
+        audio.kids.play()
+      }
+
       if (un) {
         return setTimeout(() => {
           this.setState({
@@ -242,8 +270,9 @@ export default class NewGame extends Component {
         }, 1000)
       }
     }
-
-    audio.keypress.play()
+    if (this.state.sound) {
+      audio.keypress.play()
+    }
     return this.setState({ dash, hiddenLetters, clickedLetters })
   }
 
@@ -259,9 +288,9 @@ export default class NewGame extends Component {
       hiddenLetters,
       region,
       un,
+      sound,
       countries
     } = this.state
-    console.log(capital)
     return (
       <Div100vh>
         <div
@@ -279,19 +308,21 @@ export default class NewGame extends Component {
               region={region}
               allCountries={countries}
               un={un}
-              handleInputChange={this.handleInputChange}
+              sound={sound}
+              handleModeChange={this.handleModeChange}
+              handleSoundChange={this.handleSoundChange}
             />
           ) : (
             <React.Fragment>
               <div className='flex-between game-info'>
-                <div className='container'>
+                <div className='corner-info'>
                   <div className='icon'>
                     <Heart />
                   </div>
                   <h3>{lives}</h3>
                 </div>
                 <h2 className='title'>Travel Hangman</h2>
-                <div className='container'>
+                <div className='corner-info'>
                   <div className='icon'>
                     <Flag />
                   </div>

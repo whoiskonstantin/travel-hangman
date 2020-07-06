@@ -7,53 +7,54 @@ export const GameFinished = ({
   onClick,
   countries,
   lives,
-  handleInputChange,
+  handleModeChange,
+  handleSoundChange,
   un,
-  allCountries
+  allCountries,
+  sound
 }) => {
   const regions = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania']
   const subregions = ['Southern Asia', 'Southern Europe']
-  const unusedSubregions = [
-    'Northern Africa',
-    'Middle Africa',
-    'Caribbean',
-    'South America',
-    'Western Asia',
-    'Australia and New Zealand',
-    'Western Europe',
-    'Eastern Europe',
-    'Central America',
-    'Western Africa',
-    'Southern Africa',
-    'South-Eastern Asia',
-    'Eastern Africa',
-    'Northern America',
-    'Eastern Asia',
-    'Northern Europe',
-    'Melanesia',
-    'Central Asia',
-    'Micronesia',
-    'Polynesia'
-  ]
   return (
     <div className='modal border'>
       <h1>{message}</h1>
-      <h3>
+      <h3 className='submessage'>
         {submessage}
         {region}
       </h3>
-      <div>
-        <h4 className={`all ${un ? 'disabled' : 'active'}`}>All</h4>
-        <label className='switch'>
-          <input
-            name='un'
-            type='checkbox'
-            checked={un}
-            onChange={e => handleInputChange(e)}
-          />
-          <span className='slider'></span>
-        </label>
-        <h4 className={un ? 'active' : 'disabled'}>U. N.</h4>
+      <h3 className='settings'>Game Mode</h3>
+      <div className='flex switch-container'>
+        <h4 className={`switch-text all ${un ? 'disabled' : 'active'}`}>All</h4>
+        <div className='switch-container no_highlights'>
+          <label className='switch'>
+            <input
+              name='un'
+              type='checkbox'
+              checked={un}
+              onChange={e => handleModeChange(e)}
+            />
+            <span className='slider'></span>
+          </label>
+        </div>
+        <h4 className={`switch-text ${un ? 'active' : 'disabled'}`}>U. N.</h4>
+      </div>
+      <h3 className='settings'>Sound</h3>
+      <div className='flex switch-container'>
+        <h4 className={`switch-text all ${sound ? 'disabled' : 'active'}`}>
+          Off
+        </h4>
+        <div className='switch-container no_highlights'>
+          <label className='switch'>
+            <input
+              name='sound'
+              type='checkbox'
+              checked={sound}
+              onChange={e => handleSoundChange(e)}
+            />
+            <span className='slider'></span>
+          </label>
+        </div>
+        <h4 className={`switch-text ${sound ? 'active' : 'disabled'}`}>On</h4>
       </div>
       <h4 className='menu'>Regions</h4>
       <button

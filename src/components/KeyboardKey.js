@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 export const KeyboardKey = memo(
   ({ letter = '', onClickHandler, className }) => {
     return (
-      <li>
+      <li className='no_highlights'>
         <button
           className={className}
           onClick={() => onClickHandler(letter)}

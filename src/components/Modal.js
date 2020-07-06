@@ -18,8 +18,8 @@ export default class Modal extends Component {
         submessage: 'You failed '
       },
       onWelcome: {
-        message: 'Travel Hangman',
-        submessage: 'Choose Game Mode'
+        message: 'Travel Hangman'
+        // submessage: 'Choose Game Mode'
       }
     }
   }
@@ -31,7 +31,9 @@ export default class Modal extends Component {
       onContinue,
       numberOfCountries,
       region,
-      handleInputChange,
+      handleModeChange,
+      handleSoundChange,
+      sound,
       un,
       allCountries
     } = this.props
@@ -48,8 +50,10 @@ export default class Modal extends Component {
           countries={numberOfCountries}
           lives={lives}
           allCountries={allCountries}
-          handleInputChange={handleInputChange}
+          handleModeChange={handleModeChange}
           un={un}
+          handleSoundChange={handleSoundChange}
+          sound={sound}
         />
       )
     }
@@ -75,9 +79,11 @@ export default class Modal extends Component {
           region={region}
           countries={numberOfCountries}
           lives={lives}
-          handleInputChange={handleInputChange}
+          handleModeChange={handleModeChange}
           allCountries={allCountries}
           un={un}
+          handleSoundChange={handleSoundChange}
+          sound={sound}
         />
       )
     }
@@ -88,9 +94,11 @@ export default class Modal extends Component {
         submessage={onWelcome.submessage}
         onClick={newGame}
         region={region}
-        handleInputChange={handleInputChange}
+        handleModeChange={handleModeChange}
         allCountries={allCountries}
         un={un}
+        handleSoundChange={handleSoundChange}
+        sound={sound}
       />
     )
   }
