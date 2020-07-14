@@ -112,7 +112,7 @@ export default class NewGame extends Component {
       /\s/g,
       '+'
     )}`
-    let imageUrl = `https://maps.googleapis.com/maps/api/staticmap?size=300x400&markers=size:mid%7Ccolor:red%7C${locationAPI}&key=${process.env.REACT_APP_API_KEY}`
+    let imageUrl = `https://maps.googleapis.com/maps/api/staticmap?size=300x400&markers=size:mid%7Ccolor:red%7C${locationAPI}&zoom=4&key=${process.env.REACT_APP_API_KEY}`
     let map = new Image()
     map.src = imageUrl
 
