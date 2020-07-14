@@ -35,7 +35,8 @@ export default class Modal extends Component {
       handleSoundChange,
       sound,
       un,
-      allCountries
+      allCountries,
+      map
     } = this.props
 
     const { onComplete, onPass, onGameOver, onWelcome } = this.state
@@ -65,6 +66,7 @@ export default class Modal extends Component {
           submessage={onPass.submessage}
           onClick={onContinue}
           region={region}
+          map={map}
         />
       )
     }

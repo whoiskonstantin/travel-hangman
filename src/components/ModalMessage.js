@@ -91,11 +91,26 @@ export const GameFinished = ({
   )
 }
 
-export const RoundComplete = ({ message, submessage, region, onClick }) => {
+// export const Map = ({ map }) => {
+//   console.log('map element: ', map)
+//   const image = map
+//   return image
+// }
+
+export const RoundComplete = ({
+  message,
+  submessage,
+  region,
+  onClick,
+  map
+}) => {
   return (
     <div className='modal border'>
       <h1>{message}</h1>
       <h1>{submessage}</h1>
+      <div className='map'>
+        <img src={map} alt='map' />
+      </div>
       <button
         type='button'
         className='start-game'

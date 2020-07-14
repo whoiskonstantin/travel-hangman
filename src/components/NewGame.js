@@ -35,7 +35,8 @@ export default class NewGame extends Component {
         impact: new Audio(Impact),
         pain: new Audio(Pain),
         kids: new Audio(Kids)
-      }
+      },
+      map: null
     }
   }
 
@@ -80,9 +81,11 @@ export default class NewGame extends Component {
     const randomNumber = Math.floor(Math.random() * data.length)
     const country = data[randomNumber]
     const countryName = country.name
+    const countryAPI = country.name
     const numberOfCountries = data.length
     const countries = data.filter(object => object !== country)
     let capital = country.capital
+    let capitalAPI = country.capital
     let hiddenLetters = capital.length
     capital = [...capital.toLowerCase()]
 
@@ -104,6 +107,15 @@ export default class NewGame extends Component {
       }
     }
 
+    // Loading Googel map for the win
+    const locationAPI = `${capitalAPI.replace(/\s/g, '+')},${countryAPI.replace(
+      /\s/g,
+      '+'
+    )}`
+    let imageUrl = `https://maps.googleapis.com/maps/api/staticmap?size=300x400&markers=size:mid%7Ccolor:red%7C${locationAPI}&key=${process.env.REACT_APP_API_KEY}`
+    let map = new Image()
+    map.src = imageUrl
+
     this.setState({
       countryName,
       numberOfCountries,
@@ -113,9 +125,12 @@ export default class NewGame extends Component {
       countries,
       clickedLetters: [],
       lives: 6,
-      playing: true
+      playing: true,
+      map: imageUrl
     })
   }
+
+  handleLoadMap = (capital, country) => {}
 
   handleNewGame = (region, type) => {
     const updateState = () => {
@@ -289,8 +304,10 @@ export default class NewGame extends Component {
       region,
       un,
       sound,
-      countries
+      countries,
+      map
     } = this.state
+    // console.log(map, countryName)
     return (
       <Div100vh>
         <div
@@ -300,6 +317,7 @@ export default class NewGame extends Component {
         >
           {!playing ? (
             <Modal
+              countryName={countryName}
               newGame={this.handleNewGame}
               lives={lives}
               hiddenLetters={hiddenLetters}
@@ -311,6 +329,7 @@ export default class NewGame extends Component {
               sound={sound}
               handleModeChange={this.handleModeChange}
               handleSoundChange={this.handleSoundChange}
+              map={map}
             />
           ) : (
             <React.Fragment>
